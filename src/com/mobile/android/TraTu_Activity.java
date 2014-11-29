@@ -38,6 +38,7 @@ public class TraTu_Activity extends Activity {
 	DatabaseHandler db;
 	private View mFooterView;
 	int mult = 1;
+	 static String id1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class TraTu_Activity extends Activity {
 		arrayList = new ArrayList<Contact>();
 		adap = new class_Custom_Tratuvung(TraTu_Activity.this, arrayList,
 				R.layout.custom_yeuthich);
-		db = new DatabaseHandler(TraTu_Activity.this);
+	//	db = new DatabaseHandler(TraTu_Activity.this);
 
 		button = (ImageView) findViewById(R.id.imgSearch);
 		button.setOnClickListener(new OnClickListener() {
@@ -73,18 +74,23 @@ public class TraTu_Activity extends Activity {
 
 				DatabaseHandler db = new DatabaseHandler(TraTu_Activity.this);
 				String title = arrayList.get(position).get_title();
-				//Log.i(null, "Phaanf :" + arrayList.get(position).get_title());
+				// Log.i(null, "Phaanf :" +
+				// arrayList.get(position).get_title());
+				String id_tuvung = arrayList.get(position).getId();
 
 				DatabaseHandler db1 = new DatabaseHandler(TraTu_Activity.this);
+//
+//				Contact contacts = db1.getContact(arrayList.get(position)
+//						.get_title());
+				//arrayList.get(position).get_title();
+				String propeties =arrayList.get(position).get_propeties();
 
-				Contact contacts = db1.getContact(arrayList.get(position)
-						.get_title());
-
-				String propeties = contacts.get_propeties();
-				//Log.i(null, "protested:" + contacts.get_propeties());
+				//String propeties = contacts.get_propeties();
+				// Log.i(null, "protested:" + contacts.get_propeties());
+		id1=id_tuvung;
 				Intent intent = new Intent(TraTu_Activity.this,
 						TuVung_Activity.class);
-				String id_tuvung = String.valueOf(position);
+
 				intent.putExtra("title", title);
 				intent.putExtra("pro", propeties);
 				intent.putExtra("id", id_tuvung);

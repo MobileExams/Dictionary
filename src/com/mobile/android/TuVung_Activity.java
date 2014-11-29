@@ -17,7 +17,7 @@ public class TuVung_Activity extends Activity {
 	TextView title;
 	TextView pro;
 	ImageView image;
-	 public  String str3;
+	static public String str3;
 
 	@Override
 	// thoat ra vo lai co hoi no chưa up lên man hinh
@@ -37,19 +37,21 @@ public class TuVung_Activity extends Activity {
 					Toast.makeText(TuVung_Activity.this, "Chưa có từ cần like",
 							Toast.LENGTH_SHORT).show();
 				} else {
-						db.getContact_ID_in_Title(title.getText().toString());			
-						String str = Class_ID.class_ID.getID();
-						Log.i(null, "str:"+db.str);
-						db.getlikeupdate(db.str, "1");
-					}
-		
+					// db.getContact_ID_in_Title(title.getText().toString());
+					// String str = Class_ID.class_ID.getID();
+					Log.i(null, "str:" + db.str);
+					// db.getlikeupdate(db.str, "1");
+					str3 = TraTu_Activity.id1;
+					db.getlikeupdate(str3, "1");
+				}
+
 			}
 		});
 
 		Intent intent = this.getIntent();
 		String str1 = intent.getStringExtra("title");
 		String str2 = intent.getStringExtra("pro");
-		str3= intent.getStringExtra("id");
+		// str3 = intent.getStringExtra("id");
 		title.setText("" + str1);
 		pro.setText("" + str2);
 
