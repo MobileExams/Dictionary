@@ -7,6 +7,7 @@ import java.util.Locale;
 
 
 import android.R.array;
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -92,9 +93,23 @@ public class class_Custom_Tratuvung extends BaseAdapter {
 				// Log.e("title", "   " + id);
 				// db.UPDATE_Status("1", id);
 				// Log.i(null, "get id:" + SearchArr.get(position).getId());
-				 String id_tuvung = SearchArr.get(position).getId();
+				 String id_tuvung = SearchArr.get(position).getId(); 
+				int status =Integer.parseInt( SearchArr.get(position).get_like());
 				 Id =id_tuvung;
-				db.getlikeupdate(id_tuvung, "1");
+				 if(status==0){
+				
+						db.getlikeupdate(id_tuvung, "1");
+					holder.btnFavo.setImageResource(R.drawable.ic_action_favorite_active);
+						//holder.btnFavo.setVisibility(View.VISIBLE);
+				 }else if (status==1){
+					 db.getlikeupdate(id_tuvung, "0");
+						holder.btnFavo.setImageResource(R.drawable.ic_action_favorite_list);
+						//holder.btnFavo.setVisibility(View.VISIBLE);
+
+
+				 }
+				 
+				
 
 			}
 		});
