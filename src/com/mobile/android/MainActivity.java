@@ -2,31 +2,28 @@ package com.mobile.android;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.AbsListView.OnScrollListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
@@ -50,7 +47,9 @@ public class MainActivity extends TabActivity {
 		if (isOnline() == false) {
 			Toast.makeText(MainActivity.this, "Vui long kiem tra ket noi",
 					Toast.LENGTH_LONG).show();
+
 		}
+
 		// Tra tá»«
 		final TabHost tabHost = getTabHost();
 
@@ -112,11 +111,13 @@ public class MainActivity extends TabActivity {
 					TraTu_Activity.adap.notifyDataSetChanged();
 					break;
 
-					case 1: Toast.makeText(MainActivity.this, "Main",
+				case 1:
+					Toast.makeText(MainActivity.this, "Main",
 							Toast.LENGTH_SHORT).show();
 					DatabaseHandler db = new DatabaseHandler(MainActivity.this);
 
-					YeuThich_Activity.arrayList = db.findByStatus(1);
+					YeuThich_Activity.arrayList = (ArrayList<Contact>) db
+							.findByStatus(1);
 					Log.i(null, "size:" + YeuThich_Activity.arrayList.size());
 					YeuThich_Activity.yeuthich_Adapter = new Yeuthich_Adapter(
 							MainActivity.this, YeuThich_Activity.arrayList);
@@ -135,6 +136,42 @@ public class MainActivity extends TabActivity {
 
 			}
 		});
+		final ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		// Hide the title
+		actionBar.setDisplayShowTitleEnabled(false);
+		actionBar.setDisplayUseLogoEnabled(false);
+
+		// Specify a SpinnerAdapter to populate the dropdown list.
+		ArrayAdapter<String> spinnerMenu = new ArrayAdapter<String>(
+				actionBar.getThemedContext(),
+				android.R.layout.simple_list_item_1, getResources()
+						.getStringArray(R.array.Title));
+		actionBar.setListNavigationCallbacks(
+
+		spinnerMenu,
+
+		// Provide a listener to be called when an item is selected.
+				new ActionBar.OnNavigationListener() {
+					public boolean onNavigationItemSelected(int position,
+							long id) {
+
+						switch (position) {
+						case 0:
+
+							break;
+						case 1:
+							break;
+						case 2:
+							break;
+						case 3:
+							break;
+
+						}
+
+						return true;
+					}
+				});
 	}
 
 	@Override
@@ -142,7 +179,7 @@ public class MainActivity extends TabActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.down, menu);
 		// inflater.inflate(R.menu.spiner, menu);
-		// // item = menu.findItem(R.id.menu_spin);
+		// item = menu.findItem(R.id.menu_spin);
 
 		return true;
 	}
@@ -218,7 +255,7 @@ public class MainActivity extends TabActivity {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 
-			Toast.makeText(MainActivity.this, "Ä�Ã£ Down HoÃ n Táº¥t",
+			Toast.makeText(MainActivity.this, "Đang dowload...",
 					Toast.LENGTH_SHORT).show();
 
 			// parseData();
@@ -235,7 +272,7 @@ public class MainActivity extends TabActivity {
 				// Log.i(null, "str1:" + str1);
 				// Log.i(null, "pháº§n tá»­:" + i);
 				db.addContact(new Contact(str1, listData.get(i).get_title(),
-						listData.get(i).get_propeties(), "0"));
+						listData.get(i).get_propeties(), "0","AV"));
 				// Log.i(null, "dá»­ liá»‡u");
 				String str = listData.get(i).get_title();
 			}
@@ -249,6 +286,7 @@ public class MainActivity extends TabActivity {
 				contact.set_title(cn.get_title());
 				contact.set_like(cn.get_like());
 				contact.set_propeties(cn.get_propeties());
+				 contact.setCode(cn.getCode());
 				TraTu_Activity.arrayList.add(contact);
 			}
 			TraTu_Activity.adap = new class_Custom_Tratuvung(MainActivity.this,

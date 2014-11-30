@@ -7,9 +7,9 @@
     <!-- Title -->
     <string-array name="Title">
         <item>Anh-Việt</item>
-        <item>Anh-Việt</item>
-        <item>Anh-Việt</item>
-        <item>Anh-Việt</item>
+        <item>Việt- Anh</item>
+        <item>Nhật-Việt</item>
+        <item>Việt-Nhật</item>
     </string-array>
     <!-- URL -->
 
@@ -26,6 +26,13 @@
         <item>1m</item>
         <item>1m</item>
         <item>1m</item>
+    </string-array>
+    <!-- Code -->
+    <string-array name="Code">
+        <item>AV</item>
+        <item>VA</item>
+        <item>NV</item>
+        <item>VN</item>
     </string-array>
 
 </resources>

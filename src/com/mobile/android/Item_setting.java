@@ -4,6 +4,7 @@ public class Item_setting {
 	String Title;
 	String Url;
 	String size;
+	String code;
 
 	public String getTitle() {
 		return Title;

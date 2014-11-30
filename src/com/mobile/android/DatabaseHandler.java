@@ -22,19 +22,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	protected static final String KEY_title = "title";
 	protected static final String KEY_attributes = "attributes";
 	protected static final String KEY_like = "like";
+	protected static final String KEY_code = "code";
+
 	private static final String[] COLUMNS = { KEY_Id, KEY_title,
-			KEY_attributes, KEY_like };
+			KEY_attributes, KEY_like, KEY_code };
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
-	static String str="";
+
+	static String str = "";
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_COMMUNICATION
 				+ "(" + KEY_Id + " TEXT," + KEY_title + " TEXT,"
-				+ KEY_attributes + " TEXT," + KEY_like + " TEXT" + ")";
+				+ KEY_attributes + " TEXT," + KEY_like + " TEXT" + ","
+				+ KEY_code + " TEXT" + ")";
 		db.execSQL(CREATE_CONTACTS_TABLE);
 	}
 
@@ -47,6 +51,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_title, contatc.get_title());
 		values.put(KEY_attributes, contatc.get_propeties());
 		values.put(KEY_like, contatc.get_like());
+		values.put(KEY_code, contatc.getCode());
 
 		db.insert(TABLE_COMMUNICATION, null, values);
 		db.close();
@@ -75,8 +80,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			cursor.moveToFirst();
 		Contact contact = new Contact();
 		Log.i(null, "ID:" + cursor.getString(0));
-		str=cursor.getString(0);
-	
+		str = cursor.getString(0);
+
 		return contact;
 	}
 
@@ -116,6 +121,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				contact.set_title(cursor.getString(1));
 				contact.set_propeties(cursor.getString(2));
 				contact.set_like(cursor.getString(3));
+				contact.setCode(cursor.getString(4));
+				contactList.add(contact);
+			} while (cursor.moveToNext());
+			contactList.remove(0);
+		}
+		return contactList;
+	}
+
+	public List<Contact> getAllByStatus(String status) {
+		List<Contact> contactList = new ArrayList<Contact>();
+		String selectQuery = "SELECT * FROM " + TABLE_COMMUNICATION + " WHERE "
+				+ KEY_like + " = '" + status + "'";
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		if (cursor.moveToFirst()) {
+			do {
+				Contact contact = new Contact();
+				contact.setId(cursor.getString(0));
+				contact.set_title(cursor.getString(1));
+				contact.set_propeties(cursor.getString(2));
+				contact.set_like(cursor.getString(3));
+				contact.setCode(cursor.getString(4));
 				contactList.add(contact);
 			} while (cursor.moveToNext());
 			contactList.remove(0);
@@ -132,26 +159,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		list.set_title(cursor.getString(index++).trim());
 		list.set_propeties(cursor.getString(index++).trim());
 		list.set_like(cursor.getString(index++).trim());
+		list.setCode(cursor.getString(index++).trim());
 
 		return list;
 	}
 
-	public ArrayList<Contact> findByAll() {
-		ArrayList<Contact> list = new ArrayList<Contact>();
-
-		SQLiteDatabase db = this.getWritableDatabase();
-		Cursor cursor = db.query(TABLE_COMMUNICATION, COLUMNS, null, null,
-				null, null, null);
-		while (cursor.moveToNext()) {
-			// Log.e("KhoaLD", "number");
-			list.add(getPaRamSetDto(cursor));
-
-		}
-		if (cursor != null) {
-			cursor.close();
-		}
-		return list;
-	}
+	// public ArrayList<Contact> findByAll() {
+	// ArrayList<Contact> list = new ArrayList<Contact>();
+	//
+	// SQLiteDatabase db = this.getWritableDatabase();
+	// Cursor cursor = db.query(TABLE_COMMUNICATION, COLUMNS, null, null,
+	// null, null, null);
+	// while (cursor.moveToNext()) {
+	// // Log.e("KhoaLD", "number");
+	// list.add(getPaRamSetDto(cursor));
+	//
+	// }
+	// if (cursor != null) {
+	// cursor.close();
+	// }
+	// return list;
+	// }
 
 	// update 1 dong trong bang TB_NAME = "status" voi gia tri cot id = id
 	public boolean UPDATE_Status(String status, String id) {
